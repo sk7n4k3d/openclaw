@@ -18,6 +18,7 @@ Docs: https://docs.openclaw.ai
 - Context engine/plugins: stop rejecting third-party context engines whose `info.id` differs from the registered plugin slot id. The strict-match contract added in 2026.4.14 broke `lossless-claw` and other plugins whose internal engine id does not equal the slot id they are registered under, producing repeated `info.id must match registered id` lane failures on every turn. Fixes #66601. (#66678) Thanks @GodsBoy.
 - Agents/compaction: rename embedded Pi compaction lifecycle events to `compaction_start` / `compaction_end` so OpenClaw stays aligned with `pi-coding-agent` 0.66.1 event naming. (#67713) Thanks @mpz4life.
 - Security/dotenv: block all `OPENCLAW_*` keys from untrusted workspace `.env` files so workspace-local env loading fails closed for new runtime-control variables instead of silently inheriting them. (#473)
+- Infra/net: propagate the configured global undici stream timeout onto pinned HTTP/1.1 dispatchers built by `createHttp1Agent` / `createHttp1EnvHttpProxyAgent` (SSRF-guarded fetch flows, per-request Agents). Slow local providers — Ollama, embedded runners — no longer fall back to undici's default 5-minute `headersTimeout` while waiting for first-token latency. Fixes #69390. [AI-assisted]
 
 ## 2026.4.20
 
